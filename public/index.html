@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Information</title>
+    <!-- Include React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <!-- Include Babel standalone for JSX compilation -->
+    <script crossorigin src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://cdn.socket.io/3.0.4/socket.io.js"></script>
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+    <div id="root" class="container mt-5"></div>
+
+    <!-- Your React JSX code -->
+    <script type="text/babel">
+
+        const socket = io({ transports: ['websocket'] });
+        const App = () => {
+            const [data, setData] = React.useState(null)
+            React.useEffect(() => {
+                socket.on('diskUsage', (data) => {
+                    setData(data);
+                });
+            }, [])
+            return (
+
+                <div className="row row-cols-1 row-cols-md-2 g-4">
+                    {/* Total Disk Space Card */}
+                    <div className="col">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Total Disk Space</h5>
+                                <p className="card-text">Total: <strong>{data ? data.totalGb : 0}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Free Disk Space Card */}
+                    <div className="col">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Free Disk Space</h5>
+                                <p className="card-text">Free: <strong>{data ? data.freeGb : 0}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Disk Usage Percentage Cards */}
+                    <div className="col">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Disk Usage</h5>
+                                <p className="card-text">Total Free: <strong>{data ? data.totalFree : 0}</strong></p>
+                                <p className="card-text">Total Used: <strong>{data ? data.totalUsed : 0}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* CPU Usage Percentage Cards */}
+                    <div className="col">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">CPU Usage</h5>
+                                <p className="card-text">CPU Usage: <strong>{data ? data.cpuUsage : 0}</strong></p>
+                                <p className="card-text">CPU Free: <strong>{data ? data.cpuFree : 0}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Total memory Cards */}
+                    <div className="col">
+                        <div className="card">
+                            <div className="card-body">
+                                <h5 className="card-title">Memory Information</h5>
+                                <p className="card-text">Total Memory: <strong>{data ? data.totalMem : 0}</strong></p>
+                                <p className="card-text">Used memory: <strong>{data ? data.usedMem : 0}</strong></p>
+                                <p className="card-text">Percentage: <strong>{data ? data.usedMemPercentage : 0}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>)
+        };
+
+        // Render the React component to the 'root' div
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+
+    <!-- Include Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

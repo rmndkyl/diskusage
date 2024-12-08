@@ -1,0 +1,21 @@
+{
+  "name": "monitoring",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pm2 start index.js --name watcher",
+    "stop": "pm2 stop watcher"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "diskusage": "^1.2.0",
+    "express": "^4.18.2",
+    "node-os-utils": "^1.3.7",
+    "os-utils": "^0.0.14",
+    "socket.io": "^4.7.4"
+  }
+}
